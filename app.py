@@ -831,9 +831,9 @@ with tabs[4]:
             column_config={
                 "Mensaje de la validación": st.column_config.TextColumn(width="large"),
                 "% de reaparición": st.column_config.NumberColumn(format="%.1f %%"),
-                "% código 1 entre evaluadas": st.column_config.NumberColumn(format="%.1f %%"),
-                "% código 2 entre evaluadas": st.column_config.NumberColumn(format="%.1f %%"),
-                "% código 3 entre evaluadas": st.column_config.NumberColumn(format="%.1f %%"),
+                "% código 1": st.column_config.NumberColumn(format="%.1f %%"),
+                "% código 2": st.column_config.NumberColumn(format="%.1f %%"),
+                "% código 3": st.column_config.NumberColumn(format="%.1f %%"),
             },
         )
         with st.expander("Ver casos y empresas del capítulo 5"):
