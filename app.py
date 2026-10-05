@@ -45,7 +45,7 @@ OUTCOME_COLORS = {
     "Corrección parcial": "#D95D39",
     "Corregida": "#1FA6A8",
     "Justificada": "#116B8C",
-    "Regla o sistema": "#76528B",
+    "Error del sistema": "#76528B",
     "Otro estado": "#8A94A0",
     "Sin estado": "#C4CBD2",
 }
@@ -381,7 +381,7 @@ if filtered_cases.empty:
     st.stop()
 
 st.markdown(
-    '<div class="enesem-note"><b>Unidad de análisis:</b> los indicadores cuentan combinaciones únicas de empresa y validación mediante <code>id_error</code>. Las filas históricas se utilizan únicamente para reconstruir estados y reapariciones.</div>',
+    '<div class="enesem-note"><b>Análisis:</b> los indicadores cuentan combinaciones únicas de empresa y validación mediante <code>id_error</code>. Las filas históricas se utilizan únicamente para reconstruir estados y reapariciones.</div>',
     unsafe_allow_html=True,
 )
 
@@ -392,12 +392,12 @@ m3.metric("Validaciones", fmt_int(filtered_cases["validation_key"].nunique()))
 m4.metric(
     "Reaparición",
     fmt_pct(filtered_cases["reaparece"].sum(), len(filtered_cases)),
-    help="Casos que aparecen en más de una fecha de malla.",
+    help="Casos que aparecen en más de una fecha.",
 )
 m5.metric(
     "Evaluados",
     fmt_pct(filtered_cases["evaluada"].sum(), len(filtered_cases)),
-    help="Casos cuyo último resultado registrado tiene código 1, 2 o 3.",
+    help="Casos donde el último resultado registrado tiene código 1, 2 o 3.",
 )
 
 tabs = st.tabs(
@@ -440,7 +440,7 @@ with tabs[0]:
             names="Resultado",
             values="Casos",
             hole=0.55,
-            title="Último resultado registrado",
+            title="Último código registrado",
             color="Resultado",
             color_discrete_map=OUTCOME_COLORS,
         )
@@ -469,8 +469,8 @@ with tabs[0]:
         column_config={
             "Mensaje de la validación": st.column_config.TextColumn(width="large"),
             "% de reaparición": st.column_config.NumberColumn(format="%.1f %%"),
-            "% código 2 entre evaluadas": st.column_config.NumberColumn(format="%.1f %%"),
-            "% código 3 entre evaluadas": st.column_config.NumberColumn(format="%.1f %%"),
+            "% código 2": st.column_config.NumberColumn(format="%.1f %%"),
+            "% código 3": st.column_config.NumberColumn(format="%.1f %%"),
         },
     )
 
