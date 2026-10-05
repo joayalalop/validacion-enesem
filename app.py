@@ -45,7 +45,7 @@ OUTCOME_COLORS = {
     "Corrección parcial": "#D95D39",
     "Corregida": "#1FA6A8",
     "Justificada": "#116B8C",
-    "Error del sistema": "#76528B",
+    "Regla o sistema": "#76528B",
     "Otro estado": "#8A94A0",
     "Sin estado": "#C4CBD2",
 }
