@@ -244,13 +244,13 @@ if uploaded is None:
     st.info("Carga el archivo histórico semanal en el panel izquierdo para iniciar el análisis.")
     c1, c2, c3 = st.columns(3)
     with c1:
-        st.subheader("1. Reconocimiento automático")
+        st.subheader("1. Reconocimiento")
         st.write(
-            "La aplicación identifica los nombres habituales de las columnas y puede generar `id_error` "
-            "si existen `id_empresa` y `error_n`."
+            "La aplicación identifica los nombres de las columnas y puede generar `id_error` "
+            "si existen `id_empresa` y `error_n` (los une)."
         )
     with c2:
-        st.subheader("2. Datos empresariales opcionales")
+        st.subheader("2. Datos opcionales (microdatos)")
         st.write(
             "RUC, razón social, nombre comercial, encuestador y división de carga se muestran cuando "
             "existen. Si faltan, se crean vacíos."
@@ -265,7 +265,7 @@ if uploaded is None:
         """
         #### Columnas mínimas
 
-        El archivo debe contener `id_empresa` y `error_n`. Las demás columnas enriquecen el análisis, pero su ausencia no bloquea la aplicación.
+        El archivo debe contener `id_empresa` y `error_n`. Las demás columnas mejoran el análisis, pero que no estén no bloquea la aplicación.
         """
     )
     st.stop()
