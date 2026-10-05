@@ -475,7 +475,7 @@ with tabs[0]:
     )
 
 with tabs[1]:
-    st.subheader("Priorización basada en evidencia")
+    st.subheader("Priorización basada en volumen y reaparición")
     st.caption(
         "Los porcentajes de códigos 1, 2 y 3 utilizan como denominador únicamente los casos evaluados."
     )
@@ -549,9 +549,9 @@ with tabs[1]:
             column_config={
                 "Mensaje de la validación": st.column_config.TextColumn(width="large"),
                 "% de reaparición": st.column_config.NumberColumn(format="%.1f %%"),
-                "% código 1 entre evaluadas": st.column_config.NumberColumn(format="%.1f %%"),
-                "% código 2 entre evaluadas": st.column_config.NumberColumn(format="%.1f %%"),
-                "% código 3 entre evaluadas": st.column_config.NumberColumn(format="%.1f %%"),
+                "% código 1": st.column_config.NumberColumn(format="%.1f %%"),
+                "% código 2": st.column_config.NumberColumn(format="%.1f %%"),
+                "% código 3": st.column_config.NumberColumn(format="%.1f %%"),
             },
         )
 
@@ -562,7 +562,7 @@ with tabs[2]:
         for row in filtered_catalog.itertuples()
     }
     selected_key = st.selectbox(
-        "Selecciona una validación",
+        "Seleccione una validación",
         filtered_catalog["validation_key"].tolist(),
         format_func=lambda key: labels.get(key, key),
     )
@@ -619,7 +619,7 @@ with tabs[2]:
         company = row.razon_social if pd.notna(row.razon_social) and str(row.razon_social).strip() else row.id_empresa
         case_labels[row.id_error] = f"{company} · {row.id_error}"
     selected_case_id = st.selectbox(
-        "Ver el historial de un caso",
+        "Historial",
         selected_cases["id_error"].astype(str).tolist(),
         format_func=lambda key: case_labels.get(key, key),
     )
@@ -640,7 +640,7 @@ with tabs[2]:
         columns={
             "_source_row": "Fila en el archivo",
             "fecha_malla_dt": "Fecha de malla",
-            "estado": "Estado registrado",
+            "estado": "Estado",
             "cod_val_num": "cod_val",
             "observacion_encuestador": "Observación del encuestador",
             "observacion_critico": "Observación del crítico",
@@ -756,7 +756,7 @@ with tabs[3]:
         )
         plot_or_message(fig, height=430)
     st.caption(
-        "La comparación es descriptiva. Para evaluar desempeño debe considerarse la mezcla de capítulos, validaciones, empresas y fechas de cada zonal."
+        "Comparación entre Coordinaciones Zonales"
     )
 
 with tabs[4]:
@@ -842,32 +842,32 @@ with tabs[4]:
 with tabs[5]:
     st.subheader("Matriz de distribución por perfil")
     st.write(
-        "Utiliza la evidencia precargada para acordar quién debe resolver cada validación, cuándo se requiere contactar al informante y qué tratamiento debe aplicarse."
+        "Utilice la matriz de la parte inferior para acordar quién debe resolver cada validación, cuándo se requiere contactar al informante y qué tratamiento debe aplicarse."
     )
 
     import_col, import_button_col = st.columns([3, 1])
     with import_col:
         previous_file = st.file_uploader(
-            "Incorporar acuerdos de una sesión anterior",
+            "Agregar acuerdos de algún avance anterior",
             type=["xlsx", "csv"],
             key="previous_decisions",
-            help="Puedes volver a cargar el Excel exportado por esta aplicación la semana siguiente.",
+            help="Puede volver a cargar el Excel exportado de esta aplicación en caso de´tener algún avance.",
         )
     with import_button_col:
         st.write("")
         st.write("")
-        import_clicked = st.button("Incorporar acuerdos", width="stretch")
+        import_clicked = st.button("Agregar archivo", width="stretch")
     if import_clicked:
         if previous_file is None:
-            st.warning("Selecciona primero un archivo de acuerdos.")
+            st.warning("Seleccione primero un archivo de acuerdos.")
         else:
             try:
                 imported = read_decision_file(previous_file.getvalue(), previous_file.name)
                 merged, matched = merge_decisions(st.session_state["decisions"], imported)
                 st.session_state["decisions"] = merged
-                st.success(f"Se incorporaron acuerdos para {matched:,} validaciones.".replace(",", "."))
+                st.success(f"Se agregaro acuerdos para {matched:,} validaciones.".replace(",", "."))
             except Exception as exc:
-                st.error(f"No fue posible incorporar la matriz: {exc}")
+                st.error(f"No fue posible agregar la matriz: {exc}")
 
     a1, a2, a3 = st.columns([1.2, 1, 1])
     editor_sort_options = {
@@ -967,11 +967,11 @@ with tabs[5]:
             updated_master.loc[edited_indexed.index, column] = edited_indexed[column].fillna("").astype(str)
         st.session_state["decisions"] = updated_master.reset_index()
         with status_col:
-            st.success("Los cambios quedaron guardados en esta sesión y se incluirán en la descarga.")
+            st.success("Los cambios quedaron guardados y listos para descarga.")
 
     st.divider()
     export_sensitive = st.checkbox(
-        "Incluir datos empresariales y del encuestador en la hoja Casos_filtrados",
+        "Incluir datos de empresas y del encuestador en la hoja Casos_filtrados",
         value=show_identity,
     )
     export_bytes = export_analysis_workbook(
