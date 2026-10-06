@@ -395,7 +395,7 @@ m4.metric(
     help="Casos que aparecen en más de una fecha.",
 )
 m5.metric(
-    "Evaluados",
+    "Codificados",
     fmt_pct(filtered_cases["evaluada"].sum(), len(filtered_cases)),
     help="Casos donde el último resultado registrado tiene código 1, 2 o 3.",
 )
